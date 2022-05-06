@@ -27,17 +27,17 @@
           #(Integer/parseInt (re-find #"[0-9]*" %))
           (list-images folder-name))))
 ;; Format of images
-(def format (re-find #"[a-zA-Z]*$"
+(def format-file (re-find #"[a-zA-Z]*$"
                      (first (list-images (first chapters)))))
 ;; Num -> image
 ;; e.g 54 -> 54.jpg
 ;; TODO Check for biggest number, and depending how long the biggest number is, add this many 0s
 (defn num->image [n]
   (cond
-    (> n 999) (str n \. format)
-    (> n 99) (str "0" n \. format)
-    (> n 9) (str "00" n \. format)
-    :else (str "000" n \. format)))
+    (> n 999) (str n \. format-file)
+    (> n 99) (str "0" n \. format-file)
+    (> n 9) (str "00" n \. format-file)
+    :else (str "000" n \. format-file)))
 ;; Incr string number
 ;; e.g 33.jpg 5 -> 38.jpg
 (defn incr-string [string n]
