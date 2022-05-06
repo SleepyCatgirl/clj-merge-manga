@@ -8,10 +8,9 @@ That's it.
 # Usage
 In a folder with folders of chapters of Manga, which have Ch.num (e.g Ch.0005) in the name
 1. Run clojure REPL with merge.clj
-2. Execute (main chapters)
-3. Execute (copy-images-2 chapters)
-4. Zip files inside newly created Manga folder
-5. Profit
+2. Execute (-main chapters)
+3. Zip files inside newly created Manga folder
+4. Profit
 # License
 See LICENSE.md
 # TODO
