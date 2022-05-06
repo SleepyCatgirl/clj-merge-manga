@@ -14,6 +14,6 @@ In a folder with folders of chapters of Manga, which have Ch.num (e.g Ch.0005) i
 # License
 See LICENSE.md
 # TODO
-- Make it simpler in usage
-- Cleanup function names
-- Do the zipping in the program itself
+- [ ] Make it simpler in usage
+- [ ] Cleanup function names
+- [ ] Do the zipping in the program itself
