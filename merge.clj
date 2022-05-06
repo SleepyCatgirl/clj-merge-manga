@@ -60,19 +60,19 @@
 
 
 ;; copy images to folder
-(defn copy-images [images folder-source folder-dest]
+(defn copy-images-helper [images folder-source folder-dest]
   (doseq [x images]
     (clojure.java.io/copy
      (clojure.java.io/file (add-chapter folder-source x))
      (clojure.java.io/file (add-chapter "Manga" x)))))
 
 ;; Given array of names, copy all of whats inside them to "./Manga"
-(defn copy-images-2 [arr]
+(defn copy-images [arr]
   (do
     (.mkdir (clojure.java.io/file "./Manga"))
     (doseq [x arr]
       (do
-        (copy-images (list-images x) x "./Manga")))))
+        (copy-images-helper (list-images x) x "./Manga")))))
 
 
 
