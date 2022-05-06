@@ -1,3 +1,4 @@
+(ns merge.core)
 (require '(clojure.java.io))
 ;; Regex used for checking file name
 (def re #".*Ch.[0-9]*.*")
@@ -84,7 +85,7 @@
     (re-name (add-chapter folder-name x)
              (add-chapter folder-name (incr-string x n)))))
 ;; doseq over list of chapters, renaming subsequent images
-(defn main [arr]
+(defn main-rename [arr]
   (let [n (atom 0)]
       (doseq [x arr]
         (do
@@ -92,3 +93,8 @@
           (reset! n (find-big x))))))
 
 
+
+(defn -main []
+  (do
+    (main-rename chapters)
+    (copy-images chapters)))
