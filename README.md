@@ -3,6 +3,7 @@ To merge manga chapters into one, for use with e.g
 Ebook readers and such
 # Requirements
 - Clojure
+
 That's it.
 # Usage
 In a folder with folders of chapters of Manga, which have Ch.num (e.g Ch.0005) in the name
