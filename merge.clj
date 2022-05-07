@@ -1,3 +1,4 @@
+#!/usr/bin/env bb
 (ns merge.core)
 (require '(clojure.java.io))
 ;; Regex used for checking file name
@@ -98,3 +99,5 @@
   (do
     (main-rename chapters)
     (copy-images chapters)))
+
+(-main)
