@@ -3,12 +3,13 @@ To merge manga chapters into one, for use with e.g
 Ebook readers and such
 # Requirements
 - Clojure
+- Babashka
 
 That's it.
 # Usage
 In a folder with folders of chapters of Manga, which have Ch.num (e.g Ch.0005) in the name
-1. Run clojure REPL with merge.clj
-2. Execute (-main chapters)
+1. chmod +x ./merge.clj
+2. ./merge.clj
 3. Zip files inside newly created Manga folder
 4. Profit
 # License
