@@ -18,7 +18,7 @@ See LICENSE.md
 - [x] Make it simpler in usage
 - [x] Cleanup function names
 - [ ] Do the zipping in the program itself
-- [ ] Make deleting chapters an arguemnt/option?
+- [x] Make deleting chapters an arguemnt/option?
 - [ ] Check for whether images are already in correct 'format'
 E.g if Folder 1 has 001.jpg to 005.jpg, and Folder 2 has 006.jpg to 009.jpg
 Proceeding with -main as if nothing, would just break things
