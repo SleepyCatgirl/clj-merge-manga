@@ -29,9 +29,11 @@
           #(Integer/parseInt (re-find #"[0-9]*" %))
           (list-images folder-name))))
 ;; Format of images
-;; TODO Handle when regex finds nothing
-(def format-file (re-find #"[a-zA-Z]*$"
-                     (first (list-images (first chapters)))))
+(def format-file
+  (if (empty? chapters)
+    "jpg"
+    (re-find #"[a-zA-Z]*$"
+             (first (list-images (first chapters))))))
 ;; Num -> image
 ;; e.g 54 -> 54.jpg
 (defn num->image [n]
@@ -110,7 +112,25 @@
           (reset! n (find-big x))))))
 
 
+;; Check for whether images are already in correct order
+;; [x y] (map list chapters (rest chapters))
+;; -> ((Flight 01 Flight 02), (Flight 02 Flight 03))...
+(defn check-folder [arr]
+  (let [n (atom false)]
+    (if (empty? chapters)
+      (reset! n false)
+        (doseq [[x y] (map list chapters (rest chapters))]
+          (if
+              (= (incr-string (first (list-images y)) 0)
+                 (incr-string (first (reverse (list-images x))) 1))
+            nil
+            (reset! n true))))
+      @n))
 
+;; list of conditions
+(def conditions
+  (list (if (empty? chapters) false true)
+        (check-folder chapters)))
 ;; TODO Handle when folders dont exist
 (defn -main
   ([] (do
@@ -131,5 +151,8 @@
 -c : Copy files and dont delete\n
 -h : Print help")
                   :else (-main))))
-
-(-main *command-line-args*)
+(if (empty? chapters)
+  (println "No manga")
+  (if (check-folder chapters)
+    (-main *command-line-args*)
+    (println "Either no manga or wrong num")))
