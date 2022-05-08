@@ -2,7 +2,7 @@
 (ns merge.core)
 (require '(clojure.java.io))
 ;; Regex used for checking file name
-(def re #".*Ch.[0-9]*.*")
+(def re #".*[0-9]")
 
 ;; List all folders/files
 ;; Into an array
@@ -29,11 +29,11 @@
           #(Integer/parseInt (re-find #"[0-9]*" %))
           (list-images folder-name))))
 ;; Format of images
+;; TODO Handle when regex finds nothing
 (def format-file (re-find #"[a-zA-Z]*$"
                      (first (list-images (first chapters)))))
 ;; Num -> image
 ;; e.g 54 -> 54.jpg
-;; TODO Check for biggest number, and depending how long the biggest number is, add this many 0s
 (defn num->image [n]
   (cond
     (> n 999) (str n \. format-file)
@@ -76,6 +76,22 @@
       (do
         (copy-images-helper (list-images x) x "./Manga")))))
 
+;; Instead of copying, move
+(defn move-images-helper [images folder-source folder-dest]
+  (doseq [x images]
+    (.renameTo
+     (clojure.java.io/file (add-chapter folder-source x))
+     (clojure.java.io/file (add-chapter "Manga" x)))))
+(defn move-images [arr]
+  (do
+    (.mkdir (clojure.java.io/file "./Manga"))
+    (doseq [x arr]
+      (do
+        (move-images-helper (list-images x) x "./Manga")))))
+;; Since there we move, we delete Folders
+(defn delete-files [arr]
+  (doseq [x arr]
+    (do (.delete (clojure.java.io/file x)))))
 
 
 
@@ -95,9 +111,25 @@
 
 
 
-(defn -main []
-  (do
-    (main-rename chapters)
-    (copy-images chapters)))
+;; TODO Handle when folders dont exist
+(defn -main
+  ([] (do
+       (main-rename chapters)
+       (move-images chapters)
+       (delete-files chapters)))
+  ([args] (cond (=
+                   (first args)
+                   "-d") (-main)
+                  (=
+                   (first args)
+                   "-c") (do
+                           (main-rename chapters)
+                           (copy-images chapters))
+                  (=
+                   (first args)
+                   "-h") (println "-d : Move files and delete folders\n
+-c : Copy files and dont delete\n
+-h : Print help")
+                  :else (-main))))
 
-(-main)
+(-main *command-line-args*)
