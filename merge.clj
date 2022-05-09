@@ -70,8 +70,8 @@
 (defn folder-name []
   (re-find #"[a-zA-Z]*" (first chapters)))
 (def folder-n
-  ((if (empty? chapters) nil
-       folder-name)))
+  (if (empty? chapters) nil
+       (folder-name)))
 
 (defn ch-numbers [chapters]
   (filter #(= (count %) 1)
