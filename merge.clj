@@ -127,11 +127,6 @@
             (reset! n true))))
       @n))
 
-;; list of conditions
-(def conditions
-  (list (if (empty? chapters) false true)
-        (check-folder chapters)))
-;; TODO Handle when folders dont exist
 (defn -main
   ([] (do
        (main-rename chapters)
