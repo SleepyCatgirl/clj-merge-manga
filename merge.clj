@@ -4,6 +4,7 @@
 ;; Regex used for checking file name
 (def re #".*[0-9]")
 
+
 ;; List all folders/files
 ;; Into an array
 (def folder-list
@@ -60,6 +61,32 @@
 ;; Check if exists
 ;; example
 ;; (.exists (clojure.java.io/file (str (first chapters) \/ "33.jpg")))
+
+
+
+;; Renaming not nice folders e.g Folder 1 -> Folder 01
+;; For sorting reasons
+;; Folder names
+(defn folder-name []
+  (re-find #"[a-zA-Z]*" (first chapters)))
+(def folder-n
+  ((if (empty? chapters) nil
+       folder-name)))
+
+(defn ch-numbers [chapters]
+  (filter #(= (count %) 1)
+          (re-seq #"[0-9]+"
+                  (apply str chapters))))
+
+
+;; Fix chapters if 1-9 chapters dont have leading 0
+;; which leads to order issue
+(def to-rename (map #(str folder-n " " "0" %) (ch-numbers chapters)))
+(def to-renamed (remove nil? (map #(re-matches #"^.*[^0-9][0-9]" %) chapters)))
+(def map-to-rename (map list to-renamed to-rename))
+(defn fix-chapter-sort []
+  (doseq [[x y] map-to-rename]
+    (re-name x y)))
 
 
 
@@ -142,8 +169,12 @@
                            (copy-images chapters))
                   (=
                    (first args)
-                   "-h") (println "-d : Move files and delete folders\n
--c : Copy files and dont delete\n
+                   "-f") (fix-chapter-sort)
+                  (=
+                   (first args)
+                   "-h") (println "-d : Move files and delete folders
+-c : Copy files and dont delete
+-f : Rename Chapter 1 e.g to Chapter 01
 -h : Print help")
                   :else (-main))))
 (if (empty? chapters)
