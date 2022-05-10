@@ -2,7 +2,7 @@
 (ns merge.core)
 (require '(clojure.java.io))
 ;; Regex used for checking file name
-(def re #".*[0-9]")
+(def re #".*Ch.*")
 
 
 ;; List all folders/files
@@ -10,13 +10,20 @@
 (def folder-list
            (into [] (.list
                      (clojure.java.io/file "./"))))
+
+;; Check if file is dir
+(defn is-dir [fl]
+              (if (.isDirectory
+                   (clojure.java.io/file fl))
+                fl
+                nil))
 ;; Filter out any file name that is not related
 ;; remove empty, and sort
 (def chapters
   (sort
    (remove nil?
            (map
-            #(re-matches re %)
+            is-dir
             folder-list))))
 ;; list images from chapter folder-name
 (defn list-images [folder-name]
