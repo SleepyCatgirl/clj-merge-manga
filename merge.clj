@@ -1,5 +1,4 @@
 #!/usr/bin/env bb
-(ns merge.core)
 (require '(clojure.java.io))
 ;; Regex used for checking file name
 (def re #".*Ch.*")
@@ -95,7 +94,21 @@
   (doseq [[x y] map-to-rename]
     (re-name x y)))
 
-
+;; TODO merge with previous
+;; And make it conditional
+;; like with num->image
+;; if the issue is worse
+;; E.g goes beyond Ch 100
+(defn ch-numbers-2 [chapters]
+  (filter #(= (count %) 2)
+          (re-seq #"[0-9]+"
+                  (apply str chapters))))
+(def to-rename-2 (map #(str folder-n " " "0" %) (ch-numbers-2 chapters)))
+(def to-renamed-2 (remove nil? (map #(re-matches #"^.*[^0-9][0-9][0-9]" %) chapters)))
+(def map-to-rename-2 (map list to-renamed-2 to-rename-2))
+(defn fix-chapter-sort-2 []
+  (doseq [[x y] map-to-rename-2]
+    (re-name x y)))
 
 ;; copy images to folder
 (defn copy-images-helper [images folder-source folder-dest]
