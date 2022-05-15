@@ -79,15 +79,17 @@
   (if (empty? chapters) nil
        (folder-name)))
 
-(defn ch-numbers [chapters]
+(defn ch-numbers [n]
   (filter #(= (count %) 1)
-          (re-seq #"[0-9]+"
-                  (apply str chapters))))
-
+          (map #(apply str %)
+               (map list 
+                    (lazy-seq 
+                     (range 1 (+ 1 n)))))))
 
 ;; Fix chapters if 1-9 chapters dont have leading 0
 ;; which leads to order issue
-(def to-rename (map #(str folder-n " " "0" %) (ch-numbers chapters)))
+(def to-rename (map #(str folder-n " " "0" %) (ch-numbers 10)))
+;; TODO Better regex for this
 (def to-renamed (remove nil? (map #(re-matches #"^.*[^0-9][0-9]" %) chapters)))
 (def map-to-rename (map list to-renamed to-rename))
 (defn fix-chapter-sort []
